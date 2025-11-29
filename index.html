@@ -10,6 +10,9 @@
         {{ showCart ? 'Back to Lessons' : 'Shopping Cart' }} ({{ cart.length }})
       </button>
     </div>
+    <div class="search-bar">
+      <input type="text" v-model="searchQuery" placeholder="Search lessons..." />
+    </div>
     <div class="sort-controls">
       <label for="sortAttr">Sort by:</label>
       <select v-model="sortAttribute" id="sortAttr">
@@ -26,7 +29,7 @@
     </div>
     <div v-if="!showCart">
       <ul>
-        <li v-for="lesson in sortedLessons" :key="lesson.id" class="lesson-item">
+        <li v-for="lesson in filteredLessons" :key="lesson.id" class="lesson-item">
         <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
         <div class="lesson-details">
           <div><strong>Subject:</strong> {{ lesson.subject }}</div>
@@ -100,6 +103,7 @@ export default {
         { id: 9, subject: 'Art', location: 'Art Studio', price: 24, spaces: 5, icon: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/svgs/solid/palette.svg' },
         { id: 10, subject: 'Computer Science', location: 'Lab 3', price: 26, spaces: 5, icon: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/svgs/solid/laptop-code.svg' }
       ],
+      searchQuery: '',
       checkoutName: '',
       checkoutPhone: '',
       validName: false,
@@ -142,6 +146,18 @@ export default {
     }
   },
   computed: {
+    filteredLessons() {
+      const query = this.searchQuery.trim().toLowerCase();
+      if (!query) return this.sortedLessons;
+      return this.sortedLessons.filter(lesson => {
+        return (
+          lesson.subject.toLowerCase().includes(query) ||
+          lesson.location.toLowerCase().includes(query) ||
+          lesson.price.toString().includes(query) ||
+          lesson.spaces.toString().includes(query)
+        );
+      });
+    },
     sortedLessons() {
       const sorted = [...this.lessons].sort((a, b) => {
         let valA = a[this.sortAttribute];
