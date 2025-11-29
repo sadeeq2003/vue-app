@@ -29,7 +29,7 @@
     </div>
     <div v-if="!showCart">
       <ul>
-        <li v-for="lesson in filteredLessons" :key="lesson.id" class="lesson-item">
+        <li v-for="lesson in filteredLessons" :key="lesson.id || lesson._id" class="lesson-item">
         <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
         <div class="lesson-details">
           <div><strong>Subject:</strong> {{ lesson.subject }}</div>
