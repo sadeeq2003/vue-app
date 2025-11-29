@@ -117,6 +117,8 @@
       transition: box-shadow 0.2s, transform 0.2s;
       border: 1.5px solid #e0e7ff;
       position: relative;
+      width: 100%;
+      box-sizing: border-box;
     }
     .lesson-item:hover {
       box-shadow: 0 4px 24px rgba(99,102,241,0.13);
@@ -230,300 +232,183 @@
       }
     }
   </style>
+</head>
 <body>
-  <div id="app" class="lesson-list">
-    <div class="header">
-      <h1>Lessons</h1>
-      <button
-        :disabled="cart.length === 0"
-        @click="toggleCart"
-        class="cart-btn"
-      >
-        {{ showCart ? 'Back to Lessons' : 'Shopping Cart' }} ({{ cart.length }})
-      </button>
-    </div>
-    <div class="search-bar">
-      <input type="text" v-model="searchQuery" placeholder="Search lessons..." />
-    </div>
-    <div class="sort-controls">
-      <label for="sortAttr">Sort by:</label>
-      <select v-model="sortAttribute" id="sortAttr">
-        <option value="subject">Subject</option>
-        <option value="location">Location</option>
-        <option value="price">Price</option>
-        <option value="spaces">Spaces</option>
-      </select>
-      <label for="sortOrder">Order:</label>
-      <select v-model="sortOrder" id="sortOrder">
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-      </select>
-    </div>
-    <div v-if="!showCart">
-      <div class="lesson-grid">
-        <div v-for="lesson in filteredLessons" :key="lesson.id || lesson._id" class="lesson-item">
-          <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
-        <div class="lesson-details">
-          <div><strong>Subject:</strong> {{ lesson.subject }}</div>
-          <div><strong>Location:</strong> {{ lesson.location }}</div>
-          <div><strong>Price:</strong> ${{ lesson.price }}</div>
-          <div><strong>Spaces:</strong> {{ lesson.spaces }}</div>
-          <button
-            :disabled="lesson.spaces === 0"
-            @click="addToCart(lesson)"
-            class="add-to-cart"
-          >
-            Add to Cart
-          </button>
-        </div>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      <h2>Shopping Cart</h2>
-      <ul>
-        <li v-for="lesson in cart" :key="lesson.id" class="lesson-item">
-          <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
-          <div class="lesson-details">
-            <div><strong>Subject:</strong> {{ lesson.subject }}</div>
-            <div><strong>Location:</strong> {{ lesson.location }}</div>
-            <div><strong>Price:</strong> ${{ lesson.price }}</div>
-            <button @click="removeFromCart(lesson)">Remove</button>
+  <div id="app">
+    <div class="lesson-list">
+      <div class="header">
+        <h1>Lessons</h1>
+        <button
+          :disabled="cart.length === 0"
+          @click="toggleCart"
+          class="cart-btn"
+        >
+          {{ showCart ? 'Back to Lessons' : 'Shopping Cart' }} ({{ cart.length }})
+        </button>
+      </div>
+      <div class="search-bar">
+        <input type="text" v-model="searchQuery" placeholder="Search lessons..." />
+      </div>
+      <div class="sort-controls">
+        <label for="sortAttr">Sort by:</label>
+        <select v-model="sortAttribute" id="sortAttr">
+          <option value="subject">Subject</option>
+          <option value="location">Location</option>
+          <option value="price">Price</option>
+          <option value="spaces">Spaces</option>
+        </select>
+        <label for="sortOrder">Order:</label>
+        <select v-model="sortOrder" id="sortOrder">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </div>
+      <div v-if="!showCart">
+        <div class="lesson-grid">
+          <div v-for="lesson in filteredLessons" :key="lesson.id || lesson._id" class="lesson-item">
+            <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
+            <div class="lesson-details">
+              <div><strong>Subject:</strong> {{ lesson.subject }}</div>
+              <div><strong>Location:</strong> {{ lesson.location }}</div>
+              <div><strong>Price:</strong> ${{ lesson.price }}</div>
+              <div><strong>Spaces:</strong> {{ lesson.spaces }}</div>
+              <button
+                :disabled="lesson.spaces === 0"
+                @click="addToCart(lesson)"
+                class="add-to-cart"
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
-        </li>
-      </ul>
-      <div class="checkout-section">
-        <h3>Checkout</h3>
-        <form @submit.prevent="checkout">
-          <label>Name:
-            <input type="text" v-model="checkoutName" @input="validateCheckout" />
-          </label>
-          <span v-if="checkoutName && !validName" class="error">Name must be letters only</span>
-          <br />
-          <label>Phone:
-            <input type="text" v-model="checkoutPhone" @input="validateCheckout" />
-          </label>
-          <span v-if="checkoutPhone && !validPhone" class="error">Phone must be numbers only</span>
-          <br />
-          <button type="submit" :disabled="!validName || !validPhone">Checkout</button>
-        </form>
-        <div v-if="orderConfirmed" class="confirmation">Order has been submitted!</div>
+        </div>
+      </div>
+      <div v-else>
+        <h2>Shopping Cart</h2>
+        <div class="cart-section">
+          <div v-if="cart.length === 0">Your cart is empty.</div>
+          <div v-else>
+            <div v-for="lesson in cart" :key="lesson.id || lesson._id" class="lesson-item">
+              <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
+              <div class="lesson-details">
+                <div><strong>Subject:</strong> {{ lesson.subject }}</div>
+                <div><strong>Location:</strong> {{ lesson.location }}</div>
+                <div><strong>Price:</strong> ${{ lesson.price }}</div>
+                <button @click="removeFromCart(lesson)">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="checkout-section">
+          <h3>Checkout</h3>
+          <form @submit.prevent="checkout">
+            <label>Name:
+              <input type="text" v-model="checkoutName" @input="validateCheckout" />
+            </label>
+            <span v-if="checkoutName && !validName" class="error">Name must be letters only</span>
+            <br />
+            <label>Phone:
+              <input type="text" v-model="checkoutPhone" @input="validateCheckout" />
+            </label>
+            <span v-if="checkoutPhone && !validPhone" class="error">Phone must be numbers only</span>
+            <br />
+            <button type="submit" :disabled="!validName || !validPhone">Checkout</button>
+          </form>
+          <div v-if="orderConfirmed" class="confirmation">Order has been submitted!</div>
+        </div>
       </div>
     </div>
-    </div>
   </div>
-</template>
-
-<script>
-export default {
-  name: 'LessonList',
-  data() {
-    return {
-      sortAttribute: 'subject',
-      sortOrder: 'asc',
-      showCart: false,
-      cart: [],
-      lessons: [],
-      searchQuery: '',
-      checkoutName: '',
-      checkoutPhone: '',
-      validName: false,
-      validPhone: false,
-      orderConfirmed: false,
-    }
-  },
-  mounted() {
-    fetch('http://localhost:3000/lessons')
-      .then(res => res.json())
-      .then(data => {
-        this.lessons = data;
-      })
-      .catch(() => {
-        this.lessons = [];
-      });
-  },
-  methods: {
-    addToCart(lesson) {
-      if (lesson.spaces > 0) {
-        lesson.spaces--;
-        this.cart.push(lesson);
-      }
-    },
-    removeFromCart(lesson) {
-      const idx = this.cart.findIndex(l => l.id === lesson.id);
-      if (idx !== -1) {
-        this.cart.splice(idx, 1);
-        lesson.spaces++;
-      }
-    },
-    toggleCart() {
-      this.showCart = !this.showCart;
-    },
-    validateCheckout() {
-      this.validName = /^[A-Za-z ]+$/.test(this.checkoutName);
-      this.validPhone = /^[0-9]+$/.test(this.checkoutPhone);
-    },
-    checkout() {
-      if (this.validName && this.validPhone) {
-        this.orderConfirmed = true;
-        // Optionally clear the cart and form
-        this.cart = [];
-        this.checkoutName = '';
-        this.checkoutPhone = '';
-        this.validName = false;
-        this.validPhone = false;
-        setTimeout(() => { this.orderConfirmed = false; }, 3000);
-      }
-    }
-  },
-  computed: {
-    filteredLessons() {
-      const query = this.searchQuery.trim().toLowerCase();
-      if (!query) return this.sortedLessons;
-      return this.sortedLessons.filter(lesson => {
-        return (
-          lesson.subject.toLowerCase().includes(query) ||
-          lesson.location.toLowerCase().includes(query) ||
-          lesson.price.toString().includes(query) ||
-          lesson.spaces.toString().includes(query)
-        );
-      });
-    },
-    sortedLessons() {
-      const sorted = [...this.lessons].sort((a, b) => {
-        let valA = a[this.sortAttribute];
-        let valB = b[this.sortAttribute];
-        if (typeof valA === 'string') {
-          valA = valA.toLowerCase();
-          valB = valB.toLowerCase();
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          sortAttribute: 'subject',
+          sortOrder: 'asc',
+          showCart: false,
+          cart: [],
+          lessons: [],
+          searchQuery: '',
+          checkoutName: '',
+          checkoutPhone: '',
+          validName: false,
+          validPhone: false,
+          orderConfirmed: false,
+        };
+      },
+      mounted() {
+        fetch('http://localhost:3000/lessons')
+          .then(res => res.json())
+          .then(data => {
+            this.lessons = data;
+          })
+          .catch(() => {
+            this.lessons = [];
+          });
+      },
+      methods: {
+        addToCart(lesson) {
+          if (lesson.spaces > 0) {
+            lesson.spaces--;
+            this.cart.push(lesson);
+          }
+        },
+        removeFromCart(lesson) {
+          const idx = this.cart.findIndex(l => l.id === lesson.id || l._id === lesson._id);
+          if (idx !== -1) {
+            this.cart.splice(idx, 1);
+            lesson.spaces++;
+          }
+        },
+        toggleCart() {
+          this.showCart = !this.showCart;
+        },
+        validateCheckout() {
+          this.validName = /^[A-Za-z ]+$/.test(this.checkoutName);
+          this.validPhone = /^[0-9]+$/.test(this.checkoutPhone);
+        },
+        checkout() {
+          if (this.validName && this.validPhone) {
+            this.orderConfirmed = true;
+            this.cart = [];
+            this.checkoutName = '';
+            this.checkoutPhone = '';
+            this.validName = false;
+            this.validPhone = false;
+            setTimeout(() => { this.orderConfirmed = false; }, 3000);
+          }
         }
-        if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
-        if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
-        return 0;
-      });
-      return sorted;
-    }
-  }
-}
-</script>
-
-<style scoped>
-.lesson-list {
-  max-width: 600px;
-  margin: 0 auto;
-}
-.lesson-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-.lesson-icon {
-  width: 40px;
-  height: 40px;
-  margin-right: 1rem;
-}
-.lesson-details > div {
-  margin-bottom: 0.25rem;
-}
-</style>
-
-<script>
-const { createApp } = Vue;
-
-createApp({
-  name: 'LessonList',
-  data() {
-    return {
-      sortAttribute: 'subject',
-      sortOrder: 'asc',
-      showCart: false,
-      cart: [],
-      lessons: [],
-      searchQuery: '',
-      checkoutName: '',
-      checkoutPhone: '',
-      validName: false,
-      validPhone: false,
-      orderConfirmed: false,
-    }
-  },
-  mounted() {
-    fetch('http://localhost:3000/lessons')
-      .then(res => res.json())
-      .then(data => {
-        this.lessons = data;
-      })
-      .catch(() => {
-        this.lessons = [];
-      });
-  },
-  methods: {
-    addToCart(lesson) {
-      if (lesson.spaces > 0) {
-        lesson.spaces--;
-        this.cart.push(lesson);
-      }
-    },
-    removeFromCart(lesson) {
-      const idx = this.cart.findIndex(l => l.id === lesson.id || l._id === lesson._id);
-      if (idx !== -1) {
-        this.cart.splice(idx, 1);
-        lesson.spaces++;
-      }
-    },
-    toggleCart() {
-      this.showCart = !this.showCart;
-    },
-    validateCheckout() {
-      this.validName = /^[A-Za-z ]+$/.test(this.checkoutName);
-      this.validPhone = /^[0-9]+$/.test(this.checkoutPhone);
-    },
-    checkout() {
-      if (this.validName && this.validPhone) {
-        this.orderConfirmed = true;
-        // Optionally clear the cart and form
-        this.cart = [];
-        this.checkoutName = '';
-        this.checkoutPhone = '';
-        this.validName = false;
-        this.validPhone = false;
-        setTimeout(() => { this.orderConfirmed = false; }, 3000);
-      }
-    }
-  },
-  computed: {
-    filteredLessons() {
-      const query = this.searchQuery.trim().toLowerCase();
-      if (!query) return this.sortedLessons;
-      return this.sortedLessons.filter(lesson => {
-        return (
-          (lesson.subject && lesson.subject.toLowerCase().includes(query)) ||
-          (lesson.location && lesson.location.toLowerCase().includes(query)) ||
-          lesson.price?.toString().includes(query) ||
-          lesson.spaces?.toString().includes(query)
-        );
-      });
-    },
-    sortedLessons() {
-      const sorted = [...this.lessons].sort((a, b) => {
-        let valA = a[this.sortAttribute];
-        let valB = b[this.sortAttribute];
-        if (typeof valA === 'string') {
-          valA = valA.toLowerCase();
-          valB = valB.toLowerCase();
+      },
+      computed: {
+        filteredLessons() {
+          const query = this.searchQuery.trim().toLowerCase();
+          if (!query) return this.sortedLessons;
+          return this.sortedLessons.filter(lesson => {
+            return (
+              (lesson.subject && lesson.subject.toLowerCase().includes(query)) ||
+              (lesson.location && lesson.location.toLowerCase().includes(query)) ||
+              (lesson.price && lesson.price.toString().includes(query)) ||
+              (lesson.spaces && lesson.spaces.toString().includes(query))
+            );
+          });
+        },
+        sortedLessons() {
+          const sorted = [...this.lessons].sort((a, b) => {
+            let valA = a[this.sortAttribute];
+            let valB = b[this.sortAttribute];
+            if (typeof valA === 'string') {
+              valA = valA.toLowerCase();
+              valB = valB.toLowerCase();
+            }
+            if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
+            if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
+            return 0;
+          });
+          return sorted;
         }
-        if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
-        if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
-        return 0;
-      });
-      return sorted;
-    }
-  }
-}).mount('#app');
-</script>
-
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
