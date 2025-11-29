@@ -57,6 +57,23 @@
           </div>
         </li>
       </ul>
+      <div class="checkout-section">
+        <h3>Checkout</h3>
+        <form @submit.prevent="checkout">
+          <label>Name:
+            <input type="text" v-model="checkoutName" @input="validateCheckout" />
+          </label>
+          <span v-if="checkoutName && !validName" class="error">Name must be letters only</span>
+          <br />
+          <label>Phone:
+            <input type="text" v-model="checkoutPhone" @input="validateCheckout" />
+          </label>
+          <span v-if="checkoutPhone && !validPhone" class="error">Phone must be numbers only</span>
+          <br />
+          <button type="submit" :disabled="!validName || !validPhone">Checkout</button>
+        </form>
+        <div v-if="orderConfirmed" class="confirmation">Order has been submitted!</div>
+      </div>
     </div>
     </div>
   </div>
@@ -82,7 +99,12 @@ export default {
         { id: 8, subject: 'Music', location: 'Music Room', price: 23, spaces: 5, icon: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/svgs/solid/music.svg' },
         { id: 9, subject: 'Art', location: 'Art Studio', price: 24, spaces: 5, icon: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/svgs/solid/palette.svg' },
         { id: 10, subject: 'Computer Science', location: 'Lab 3', price: 26, spaces: 5, icon: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/svgs/solid/laptop-code.svg' }
-      ]
+      ],
+      checkoutName: '',
+      checkoutPhone: '',
+      validName: false,
+      validPhone: false,
+      orderConfirmed: false,
     }
   },
   methods: {
@@ -101,6 +123,22 @@ export default {
     },
     toggleCart() {
       this.showCart = !this.showCart;
+    },
+    validateCheckout() {
+      this.validName = /^[A-Za-z ]+$/.test(this.checkoutName);
+      this.validPhone = /^[0-9]+$/.test(this.checkoutPhone);
+    },
+    checkout() {
+      if (this.validName && this.validPhone) {
+        this.orderConfirmed = true;
+        // Optionally clear the cart and form
+        this.cart = [];
+        this.checkoutName = '';
+        this.checkoutPhone = '';
+        this.validName = false;
+        this.validPhone = false;
+        setTimeout(() => { this.orderConfirmed = false; }, 3000);
+      }
     }
   },
   computed: {
