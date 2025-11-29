@@ -1,5 +1,14 @@
-<template>
-  <div class="lesson-list">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson List</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="lesson-list">
     <div class="header">
       <h1>Lessons</h1>
       <button
@@ -197,3 +206,101 @@ export default {
   margin-bottom: 0.25rem;
 }
 </style>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+  name: 'LessonList',
+  data() {
+    return {
+      sortAttribute: 'subject',
+      sortOrder: 'asc',
+      showCart: false,
+      cart: [],
+      lessons: [],
+      searchQuery: '',
+      checkoutName: '',
+      checkoutPhone: '',
+      validName: false,
+      validPhone: false,
+      orderConfirmed: false,
+    }
+  },
+  mounted() {
+    fetch('http://localhost:3000/lessons')
+      .then(res => res.json())
+      .then(data => {
+        this.lessons = data;
+      })
+      .catch(() => {
+        this.lessons = [];
+      });
+  },
+  methods: {
+    addToCart(lesson) {
+      if (lesson.spaces > 0) {
+        lesson.spaces--;
+        this.cart.push(lesson);
+      }
+    },
+    removeFromCart(lesson) {
+      const idx = this.cart.findIndex(l => l.id === lesson.id || l._id === lesson._id);
+      if (idx !== -1) {
+        this.cart.splice(idx, 1);
+        lesson.spaces++;
+      }
+    },
+    toggleCart() {
+      this.showCart = !this.showCart;
+    },
+    validateCheckout() {
+      this.validName = /^[A-Za-z ]+$/.test(this.checkoutName);
+      this.validPhone = /^[0-9]+$/.test(this.checkoutPhone);
+    },
+    checkout() {
+      if (this.validName && this.validPhone) {
+        this.orderConfirmed = true;
+        // Optionally clear the cart and form
+        this.cart = [];
+        this.checkoutName = '';
+        this.checkoutPhone = '';
+        this.validName = false;
+        this.validPhone = false;
+        setTimeout(() => { this.orderConfirmed = false; }, 3000);
+      }
+    }
+  },
+  computed: {
+    filteredLessons() {
+      const query = this.searchQuery.trim().toLowerCase();
+      if (!query) return this.sortedLessons;
+      return this.sortedLessons.filter(lesson => {
+        return (
+          (lesson.subject && lesson.subject.toLowerCase().includes(query)) ||
+          (lesson.location && lesson.location.toLowerCase().includes(query)) ||
+          lesson.price?.toString().includes(query) ||
+          lesson.spaces?.toString().includes(query)
+        );
+      });
+    },
+    sortedLessons() {
+      const sorted = [...this.lessons].sort((a, b) => {
+        let valA = a[this.sortAttribute];
+        let valB = b[this.sortAttribute];
+        if (typeof valA === 'string') {
+          valA = valA.toLowerCase();
+          valB = valB.toLowerCase();
+        }
+        if (valA < valB) return this.sortOrder === 'asc' ? -1 : 1;
+        if (valA > valB) return this.sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+      return sorted;
+    }
+  }
+}).mount('#app');
+</script>
+
+</body>
+</html>
