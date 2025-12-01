@@ -411,6 +411,26 @@
         padding: 1.2rem 0.5rem;
       }
     }
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      width: 100%;
+    }
+    .spinner {
+      width: 54px;
+      height: 54px;
+      border: 6px solid #e5e7eb;
+      border-top: 6px solid #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -443,7 +463,10 @@
           <option value="desc">Descending</option>
         </select>
       </div>
-      <div v-if="!showCart">
+      <div v-if="loading" class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+      <div v-else-if="!showCart">
         <div class="lesson-grid">
           <div v-for="lesson in filteredLessons" :key="lesson.id || lesson._id" class="lesson-item">
             <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
@@ -510,6 +533,7 @@
           cart: [],
           lessons: [],
           searchQuery: '',
+          loading: true,
           checkoutName: '',
           checkoutPhone: '',
           validName: false,
@@ -518,13 +542,16 @@
         };
       },
       mounted() {
-        fetch('https://express-app-6ez2.onrender.com')
+        fetch('https://express-app-6ez2.onrender.com/lessons')
           .then(res => res.json())
           .then(data => {
             this.lessons = data;
           })
           .catch(() => {
             this.lessons = [];
+          })
+          .finally(() => {
+            this.loading = false;
           });
       },
       methods: {
