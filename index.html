@@ -518,7 +518,7 @@
         };
       },
       mounted() {
-        fetch('http://localhost:3000/lessons')
+        fetch('https://express-app-6ez2.onrender.com')
           .then(res => res.json())
           .then(data => {
             this.lessons = data;
