@@ -18,6 +18,15 @@
   <style>
     /* Style for html and body elements */
     html, body {
+      background: #f7f8fa;
+      color: #232323;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      width: 100vw;
+      max-width: 100vw;
+      overflow-x: hidden;
+    
       /* Set background color */
       background: #f6f7fb;
       /* Set text color */
@@ -42,7 +51,7 @@
       min-height: 100vh;
       margin: 0 auto;
       background: #fff;
-      border-radius: 24px;
+      border-radius: 28px;
       box-shadow: 0 8px 36px rgba(60,60,120,0.09);
       padding: 4rem 3vw 3rem 3vw;
       box-sizing: border-box;
@@ -85,12 +94,29 @@
     }
     /* Search bar container styles */
     .search-bar {
+      margin-bottom: 2.2rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    
       margin-bottom: 1.5rem;
       display: flex;
       justify-content: center;
     }
     /* Search input styles */
     .search-bar input {
+      width: 100%;
+      max-width: 520px;
+      padding: 1.1rem 1.3rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      background: #f6f7fb;
+      color: #232323;
+      box-shadow: 0 1px 8px rgba(99,102,241,0.04);
+      outline: none;
+      transition: border 0.2s;
+    
       width: 100%;
       max-width: 400px;
       padding: 0.7rem 1rem;
@@ -111,6 +137,13 @@
     /* Container styles for sort controls */
     .sort-controls {
       display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2.2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    
+      display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
       align-items: center;
@@ -125,6 +158,15 @@
     }
     /* Styles for select dropdowns in sort controls */
     .sort-controls select {
+      border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+      padding: 0.6rem 1.2rem;
+      font-size: 1.22rem;
+      background: #f6f7fb;
+      color: #232323;
+      outline: none;
+      transition: border 0.2s;
+    
       /* Rounded corners for select dropdown */
       border-radius: 6px;
       border: 1px solid #c7d2fe;
@@ -152,9 +194,9 @@
     .lesson-grid {
       display: grid;
       /* Responsive columns for lessons */
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       /* Space between lesson cards */
-      gap: 2.6rem;
+      gap: 1.5rem;
       /* Space above lesson grid */
       margin-top: 2.4rem;
       max-width: 100vw;
@@ -164,11 +206,11 @@
     .lesson-item {
       background: #f9f9f9;
       /* Rounded corners for cards */
-      border-radius: 20px;
+      border-radius: 28px;
       /* Card shadow effect */
       box-shadow: 0 4px 24px rgba(60,60,120,0.09);
       /* Padding inside lesson cards */
-      padding: 2.5rem 1.7rem 2.5rem 1.7rem;
+      padding: 2.6rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -186,6 +228,7 @@
       max-width: 100%;
       /* Allow horizontal scrolling if needed */
       overflow-x: auto;
+      font-size: 1.22rem;
     }
     /* Hover effect for lesson cards */
     .lesson-item:hover {
@@ -209,14 +252,27 @@
       background: #6366f1;
       color: #fff;
       border: none;
+      border-radius: 14px;
+      padding: 0.7rem 1.4rem;
+      font-size: 1.07rem;
+      font-weight: 700;
+      margin-top: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.09);
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.01em;
+    
+      background: #6366f1;
+      color: #fff;
+      border: none;
       border-radius: 12px;
       /* Padding for add to cart button */
-      padding: 0.85rem 2rem;
+      padding: 0.4rem 0.8rem;
       /* Large font for add to cart */
-      font-size: 1.17rem;
+      font-size: 0.95rem;
       font-weight: 700;
       /* Space above add to cart button */
-      margin-top: 1.2rem;
+      margin-top: 0.6rem;
       cursor: pointer;
       /* Shadow for add to cart button */
       box-shadow: 0 2px 8px rgba(99,102,241,0.09);
@@ -242,9 +298,9 @@
       border: none;
       border-radius: 12px;
       /* Padding for cart button */
-      padding: 1rem 2.2rem;
+      padding: 0.7rem 1.2rem;
       /* Large font for cart button */
-      font-size: 1.22rem;
+      font-size: 1rem;
       font-weight: 800;
       cursor: pointer;
       /* Shadow for cart button */
@@ -270,9 +326,9 @@
     .lesson-grid {
       display: grid;
       /* Responsive columns for lessons */
-      grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       /* Space between lesson cards */
-      gap: 2.8rem;
+      gap: 1.5rem;
       /* Space above lesson grid */
       margin-top: 2.2rem;
     }
@@ -280,11 +336,11 @@
     .checkout-section, .cart-section {
       background: #f9f9f9;
       /* Rounded corners for checkout/cart section */
-      border-radius: 18px;
+      border-radius: 28px;
       /* Shadow for checkout/cart section */
       box-shadow: 0 2px 16px rgba(60,60,120,0.10);
       /* Padding for checkout/cart section */
-      padding: 2.4rem 2.2rem 2.2rem 2.2rem;
+      padding: 2.6rem 2rem 2.6rem 2rem;
       /* Space above checkout/cart section */
       margin-top: 2.7rem;
       color: #232323;
@@ -348,6 +404,11 @@
       margin-top: 1.1rem;
       text-align: center;
     }
+    /* Styles for lesson icon */
+    .lesson-icon {
+      width: 120px;
+      height: 120px;
+    }
     @media (max-width: 900px) {
       .lesson-list {
         padding: 1.2rem 1vw;
@@ -387,11 +448,11 @@
         gap: 0.5rem;
       }
       .lesson-item {
-        padding: 1rem 0.6rem;
+        padding: 0.6rem 0.3rem;
       }
       .lesson-icon {
-        width: 54px;
-        height: 54px;
+        width: 24px;
+        height: 24px;
       }
       .checkout-section, .cart-section {
         padding: 1.2rem 0.5rem;
@@ -405,8 +466,8 @@
       width: 100%;
     }
     .spinner {
-      width: 54px;
-      height: 54px;
+      width: 44px;
+      height: 44px;
       border: 6px solid #e5e7eb;
       border-top: 6px solid #6366f1;
       border-radius: 50%;
