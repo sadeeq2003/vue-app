@@ -1,22 +1,41 @@
+<!-- Document type declaration for HTML5 -->
 <!DOCTYPE html>
+<!-- Root HTML element with language set to English -->
 <html lang="en">
+<!-- Head section containing meta information and resources -->
 <head>
+  <!-- Character encoding set to UTF-8 -->
   <meta charset="UTF-8">
+  <!-- Responsive viewport settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Page title -->
   <title>Lesson Marketplace</title>
+  <!-- Google Fonts: Inter family -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- VUE CDN LINK -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!-- Internal CSS styles -->
   <style>
+    /* Style for html and body elements */
     html, body {
+      /* Set background color */
       background: #f6f7fb;
+      /* Set text color */
       color: #232323;
+      /* Set font family */
       font-family: 'Inter', Arial, sans-serif;
+      /* Remove default margin */
       margin: 0;
+      /* Ensure minimum height covers viewport */
       min-height: 100vh;
+      /* Set width to viewport width */
       width: 100vw;
+      /* Prevent exceeding viewport width */
       max-width: 100vw;
+      /* Hide horizontal overflow */
       overflow-x: hidden;
     }
+    /* Style for lesson-list container */
     .lesson-list {
       width: 100%;
       max-width: 1200px;
@@ -29,6 +48,7 @@
       box-sizing: border-box;
       overflow-x: hidden;
     }
+    /* Header section styles */
     .header {
       display: flex;
       align-items: center;
@@ -36,6 +56,7 @@
       margin-bottom: 2.5rem;
       gap: 2vw;
     }
+    /* Header title styles */
     .header h1 {
       font-size: 2.7rem;
       font-weight: 900;
@@ -43,6 +64,7 @@
       margin: 0;
       letter-spacing: -1.5px;
     }
+    /* Shopping cart button styles */
     .cart-btn {
       background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
       color: #fff;
@@ -55,16 +77,19 @@
       box-shadow: 0 2px 8px rgba(99,102,241,0.10);
       transition: background 0.2s, transform 0.2s;
     }
+    /* Disabled cart button styles */
     .cart-btn:disabled {
       background: #c7d2fe;
       color: #a5b4fc;
       cursor: not-allowed;
     }
+    /* Search bar container styles */
     .search-bar {
       margin-bottom: 1.5rem;
       display: flex;
       justify-content: center;
     }
+    /* Search input styles */
     .search-bar input {
       width: 100%;
       max-width: 400px;
@@ -74,27 +99,36 @@
       font-size: 1rem;
       background: #f1f5f9;
       color: #3730a3;
+      /* Add a subtle shadow to the input */
       box-shadow: 0 1px 4px rgba(99,102,241,0.04);
       outline: none;
       transition: border 0.2s;
     }
+    /* Style for focused search input border color */
     .search-bar input:focus {
       border: 1.5px solid #6366f1;
     }
+    /* Container styles for sort controls */
     .sort-controls {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
       align-items: center;
+      /* Allow sort controls to wrap on small screens */
       flex-wrap: wrap;
     }
+    /* Styles for labels in sort controls */
     .sort-controls label {
       font-weight: 600;
+      /* Set label color to indigo */
       color: #6366f1;
     }
+    /* Styles for select dropdowns in sort controls */
     .sort-controls select {
+      /* Rounded corners for select dropdown */
       border-radius: 6px;
       border: 1px solid #c7d2fe;
+      /* Padding for select dropdown */
       padding: 0.4rem 0.9rem;
       font-size: 1rem;
       background: #f1f5f9;
@@ -102,236 +136,188 @@
       outline: none;
       transition: border 0.2s;
     }
+    /* Style for focused select dropdown border color */
     .sort-controls select:focus {
       border: 1.5px solid #6366f1;
     }
+    /* Remove default styles from unordered lists */
     ul {
+      /* Remove bullet points from lists */
       list-style: none;
+      /* Remove default padding from lists */
       padding: 0;
       margin: 0;
     }
+    /* Container styles for lesson grid */
     .lesson-grid {
       display: grid;
+      /* Responsive columns for lessons */
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      /* Space between lesson cards */
       gap: 2.6rem;
+      /* Space above lesson grid */
       margin-top: 2.4rem;
       max-width: 100vw;
       box-sizing: border-box;
     }
+    /* Styles for individual lesson cards */
     .lesson-item {
       background: #f9f9f9;
+      /* Rounded corners for cards */
       border-radius: 20px;
+      /* Card shadow effect */
       box-shadow: 0 4px 24px rgba(60,60,120,0.09);
+      /* Padding inside lesson cards */
       padding: 2.5rem 1.7rem 2.5rem 1.7rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      /* Animate card shadow, position, and border */
       transition: box-shadow 0.2s, transform 0.2s, border 0.2s;
       border: 1.5px solid #e5e7eb;
+      /* Allow absolute positioning inside card */
       position: relative;
       width: 100%;
       box-sizing: border-box;
       color: #232323;
+      /* Allow long words to break in card */
       word-break: break-word;
+      /* Prevent card from exceeding grid cell */
       max-width: 100%;
+      /* Allow horizontal scrolling if needed */
       overflow-x: auto;
     }
+    /* Hover effect for lesson cards */
     .lesson-item:hover {
+      /* Stronger shadow on hover */
       box-shadow: 0 12px 36px rgba(60,60,120,0.16);
+      /* Slightly raise and scale card on hover */
       transform: translateY(-6px) scale(1.03);
       border: 1.5px solid #6366f1;
       background: #fff;
     }
+    /* Additional hover effect for lesson cards */
     .lesson-item:hover {
+      /* Even stronger shadow on hover */
       box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+      /* Subtle translation and scale on hover */
       transform: translateY(-2px) scale(1.012);
       border: 2px solid #111;
     }
+    /* Styles for add to cart button */
     .add-to-cart {
       background: #6366f1;
       color: #fff;
       border: none;
       border-radius: 12px;
+      /* Padding for add to cart button */
       padding: 0.85rem 2rem;
+      /* Large font for add to cart */
       font-size: 1.17rem;
       font-weight: 700;
+      /* Space above add to cart button */
       margin-top: 1.2rem;
       cursor: pointer;
+      /* Shadow for add to cart button */
       box-shadow: 0 2px 8px rgba(99,102,241,0.09);
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       letter-spacing: 0.01em;
     }
+    /* Hover effect for add to cart button */
     .add-to-cart:hover:not(:disabled) {
       background: #232323;
       color: #fff;
       box-shadow: 0 4px 16px rgba(99,102,241,0.14);
     }
+    /* Disabled add to cart button styles */
     .add-to-cart:disabled {
       background: #eee;
       color: #aaa;
       cursor: not-allowed;
     }
+    /* Shopping cart button styles (duplicate for specificity) */
     .cart-btn {
       background: #6366f1;
       color: #fff;
       border: none;
       border-radius: 12px;
+      /* Padding for cart button */
       padding: 1rem 2.2rem;
+      /* Large font for cart button */
       font-size: 1.22rem;
       font-weight: 800;
       cursor: pointer;
+      /* Shadow for cart button */
       box-shadow: 0 2px 12px rgba(99,102,241,0.13);
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       letter-spacing: 0.01em;
     }
+    /* Hover effect for cart button */
     .cart-btn:hover:not(:disabled) {
       background: #232323;
       color: #fff;
       box-shadow: 0 4px 16px rgba(99,102,241,0.14);
     }
+    /* Disabled cart button styles (duplicate for specificity) */
     .cart-btn:disabled {
       background: #eee;
       color: #aaa;
+      /* Grey border when disabled */
       border: 2px solid #eee;
       cursor: not-allowed;
     }
+    /* Lesson grid container styles (duplicate for specificity) */
     .lesson-grid {
       display: grid;
+      /* Responsive columns for lessons */
       grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+      /* Space between lesson cards */
       gap: 2.8rem;
+      /* Space above lesson grid */
       margin-top: 2.2rem;
     }
+    /* Checkout and cart section container styles */
     .checkout-section, .cart-section {
       background: #f9f9f9;
+      /* Rounded corners for checkout/cart section */
       border-radius: 18px;
+      /* Shadow for checkout/cart section */
       box-shadow: 0 2px 16px rgba(60,60,120,0.10);
+      /* Padding for checkout/cart section */
       padding: 2.4rem 2.2rem 2.2rem 2.2rem;
+      /* Space above checkout/cart section */
       margin-top: 2.7rem;
       color: #232323;
       border: 1.5px solid #e5e7eb;
     }
+    /* Checkout section title styles */
     .checkout-section h3 {
       color: #232323;
+      /* Large font for title */
       font-size: 1.25rem;
       font-weight: 800;
+      /* Space below title */
       margin-bottom: 1.1rem;
     }
+    /* Checkout section text input styles */
     .checkout-section input[type="text"] {
       background: #fff;
       color: #232323;
       border: 1.5px solid #e5e7eb;
+      /* Slightly larger font for input */
       font-size: 1.08rem;
+      /* Padding for input */
       padding: 0.7rem 1.1rem;
       border-radius: 8px;
+      /* Space below input */
       margin-bottom: 0.7rem;
       box-sizing: border-box;
     }
+    /* Focused checkout input border color */
     .checkout-section input[type="text"]:focus {
       border: 2px solid #111;
     }
-    .checkout-section button[type="submit"] {
-      background: #6366f1;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 1rem 2.2rem;
-      font-size: 1.15rem;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 1rem;
-      box-shadow: 0 2px 12px rgba(99,102,241,0.13);
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-      letter-spacing: 0.01em;
-    }
-    .checkout-section button[type="submit"]:hover:not(:disabled) {
-      background: #232323;
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(99,102,241,0.14);
-    }
-    .checkout-section button:disabled {
-      background: #eee;
-      color: #aaa;
-      cursor: not-allowed;
-    }
-    .lesson-details > div {
-      color: #232323;
-      font-size: 1.15rem;
-      margin-bottom: 0.55rem;
-      font-weight: 600;
-    }
-    .lesson-item:hover {
-      box-shadow: 0 4px 24px rgba(99,102,241,0.13);
-      transform: translateY(-2px) scale(1.012);
-      border: 1.5px solid #6366f1;
-    }
-    .lesson-icon {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 1.5rem;
-      filter: drop-shadow(0 4px 16px #6366f1aa);
-    }
-    .lesson-details {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 0.7rem;
-    }
-    .lesson-details > div {
-      margin-bottom: 0.4rem;
-      font-size: 1.08rem;
-      color: #3730a3;
-    }
-    .add-to-cart {
-      background: linear-gradient(90deg, #818cf8 0%, #6366f1 100%);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem 1.2rem;
-      font-size: 1.07rem;
-      font-weight: 600;
-      margin-top: 0.7rem;
-      cursor: pointer;
-      box-shadow: 0 1px 6px rgba(99,102,241,0.10);
-      transition: background 0.2s, transform 0.2s;
-    }
-    .add-to-cart:disabled {
-      background: #e0e7ff;
-      color: #a5b4fc;
-      cursor: not-allowed;
-    }
-    .cart-section, .checkout-section {
-      background: #f8fafc;
-      border-radius: 14px;
-      box-shadow: 0 2px 10px rgba(99,102,241,0.06);
-      padding: 1.7rem 1.5rem 1.5rem 1.5rem;
-      margin-top: 2rem;
-    }
-    .checkout-section h3 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #3730a3;
-      margin-bottom: 1rem;
-    }
-    .checkout-section label {
-      font-weight: 600;
-      color: #6366f1;
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-    .checkout-section input[type="text"] {
-      width: 100%;
-      padding: 0.55rem 0.8rem;
-      border-radius: 7px;
-      border: 1px solid #c7d2fe;
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-      background: #f1f5f9;
-      color: #3730a3;
-      outline: none;
-      transition: border 0.2s;
-    }
-    .checkout-section input[type="text"]:focus {
-      border: 1.5px solid #6366f1;
-    }
+    /* Checkout section submit button styles */
     .checkout-section button[type="submit"] {
       background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
       color: #fff;
@@ -433,53 +419,79 @@
     }
   </style>
 </head>
+<!-- Body of the HTML document -->
 <body>
+  <!-- Vue.js app root element -->
   <div id="app">
+        <!-- Main container for lessons and cart -->
     <div class="lesson-list">
+            <!-- Header section with title and cart button -->
       <div class="header">
+                <!-- Main heading -->
         <h1>Lessons</h1>
         <button
           :disabled="cart.length === 0"
           @click="toggleCart"
           class="cart-btn"
         >
+                    <!-- Button label shows cart state and item count -->
           {{ showCart ? 'Back to Lessons' : 'Shopping Cart' }} ({{ cart.length }})
         </button>
       </div>
+            <!-- Search bar for filtering lessons -->
       <div class="search-bar">
+                <!-- Input for lesson search -->
         <input type="text" v-model="searchQuery" placeholder="Search lessons..." />
       </div>
+            <!-- Controls for sorting lessons -->
       <div class="sort-controls">
+                <!-- Label for sort attribute -->
         <label for="sortAttr">Sort by:</label>
+                <!-- Dropdown for selecting sort attribute -->
         <select v-model="sortAttribute" id="sortAttr">
+                    <!-- Option: sort by subject -->
           <option value="subject">Subject</option>
+                    <!-- Option: sort by location -->
           <option value="location">Location</option>
+                    <!-- Option: sort by price -->
           <option value="price">Price</option>
+                    <!-- Option: sort by spaces -->
           <option value="spaces">Spaces</option>
         </select>
+                <!-- Label for sort order -->
         <label for="sortOrder">Order:</label>
+                <!-- Dropdown for selecting sort order -->
         <select v-model="sortOrder" id="sortOrder">
+                    <!-- Option: ascending order -->
           <option value="asc">Ascending</option>
+                    <!-- Option: descending order -->
           <option value="desc">Descending</option>
         </select>
       </div>
+            <!-- Spinner shown while loading data -->
       <div v-if="loading" class="spinner-container">
+                <!-- Loading spinner -->
         <div class="spinner"></div>
       </div>
+            <!-- Display lessons if not showing cart -->
       <div v-else-if="!showCart">
+                <!-- Grid container for lesson cards -->
         <div class="lesson-grid">
+                    <!-- Loop through and render each lesson card -->
           <div v-for="lesson in filteredLessons" :key="lesson.id || lesson._id" class="lesson-item">
             <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
             <div class="lesson-details">
               <div><strong>Subject:</strong> {{ lesson.subject }}</div>
               <div><strong>Location:</strong> {{ lesson.location }}</div>
               <div><strong>Price:</strong> ${{ lesson.price }}</div>
+                            <!-- Spaces available -->
               <div><strong>Spaces:</strong> {{ lesson.spaces }}</div>
               <button
                 :disabled="lesson.spaces === 0"
                 @click="addToCart(lesson)"
                 class="add-to-cart"
               >
+                                <!-- Button label -->
                 Add to Cart
               </button>
             </div>
@@ -487,46 +499,66 @@
         </div>
       </div>
       <div v-else>
+                <!-- Cart section heading -->
         <h2>Shopping Cart</h2>
+                <!-- Container for cart items -->
         <div class="cart-section">
+                    <!-- Message if cart is empty -->
           <div v-if="cart.length === 0">Your cart is empty.</div>
           <div v-else>
+                        <!-- Loop through cart items -->
             <div v-for="lesson in cart" :key="lesson.id || lesson._id" class="lesson-item">
               <img :src="lesson.icon" alt="Lesson Icon" class="lesson-icon" />
               <div class="lesson-details">
                 <div><strong>Subject:</strong> {{ lesson.subject }}</div>
                 <div><strong>Location:</strong> {{ lesson.location }}</div>
                 <div><strong>Price:</strong> ${{ lesson.price }}</div>
+                                <!-- Remove from cart button -->
                 <button @click="removeFromCart(lesson)">Remove</button>
               </div>
             </div>
           </div>
         </div>
+                <!-- Checkout form section -->
         <div class="checkout-section">
+                    <!-- Checkout heading -->
           <h3>Checkout</h3>
+                    <!-- Form for submitting order -->
           <form @submit.prevent="checkout">
+                        <!-- Name input label -->
             <label>Name:
+                            <!-- Input for user's name -->
               <input type="text" v-model="checkoutName" @input="validateCheckout" />
             </label>
+                        <!-- Error if name is invalid -->
             <span v-if="checkoutName && !validName" class="error">Name must be letters only</span>
             <br />
+                        <!-- Phone input label -->
             <label>Phone:
+                            <!-- Input for user's phone -->
               <input type="text" v-model="checkoutPhone" @input="validateCheckout" />
             </label>
+                        <!-- Error if phone is invalid -->
             <span v-if="checkoutPhone && !validPhone" class="error">Phone must be numbers only</span>
             <br />
+                        <!-- Button to submit order -->
             <button type="submit" :disabled="!validName || !validPhone">Checkout</button>
           </form>
+                    <!-- Confirmation message after order -->
           <div v-if="orderConfirmed" class="confirmation">Order has been submitted!</div>
         </div>
       </div>
     </div>
   </div>
+    <!-- Vue.js app script -->
   <script>
+        // Import createApp from Vue
     const { createApp } = Vue;
+        // Create the Vue app
     createApp({
+            // Data properties for the app
       data() {
-        return {
+                return {
           sortAttribute: 'subject',
           sortOrder: 'asc',
           showCart: false,
@@ -541,7 +573,9 @@
           orderConfirmed: false,
         };
       },
+            // Lifecycle hook: called when component is mounted
       mounted() {
+                // Fetch lessons data from backend
         fetch('https://express-app-6ez2.onrender.com/lessons')
           .then(res => res.json())
           .then(data => {
@@ -554,13 +588,16 @@
             this.loading = false;
           });
       },
+            // Methods for user actions
       methods: {
+                // Add a lesson to the cart
         addToCart(lesson) {
           if (lesson.spaces > 0) {
             lesson.spaces--;
             this.cart.push(lesson);
           }
         },
+                // Remove a lesson from the cart
         removeFromCart(lesson) {
           const idx = this.cart.findIndex(l => l.id === lesson.id || l._id === lesson._id);
           if (idx !== -1) {
@@ -568,26 +605,50 @@
             lesson.spaces++;
           }
         },
+                // Toggle between lessons and cart view
         toggleCart() {
           this.showCart = !this.showCart;
         },
+                // Validate the checkout form inputs
         validateCheckout() {
           this.validName = /^[A-Za-z ]+$/.test(this.checkoutName);
           this.validPhone = /^[0-9]+$/.test(this.checkoutPhone);
         },
+                // Handle the checkout process
         checkout() {
-          if (this.validName && this.validPhone) {
-            this.orderConfirmed = true;
-            this.cart = [];
-            this.checkoutName = '';
-            this.checkoutPhone = '';
-            this.validName = false;
-            this.validPhone = false;
-            setTimeout(() => { this.orderConfirmed = false; }, 3000);
+          if (this.validName && this.validPhone && this.cart.length > 0) {
+                        // Send order to backend
+            fetch('https://express-app-6ez2.onrender.com/orders', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: this.checkoutName,
+                phone: this.checkoutPhone,
+                cart: this.cart
+              })
+            })
+              .then(res => {
+                if (!res.ok) throw new Error('Order failed');
+                return res.json();
+              })
+              .then(() => {
+                this.orderConfirmed = true;
+                this.cart = [];
+                this.checkoutName = '';
+                this.checkoutPhone = '';
+                this.validName = false;
+                this.validPhone = false;
+                setTimeout(() => { this.orderConfirmed = false; }, 3000);
+              })
+              .catch(() => {
+                alert('Order could not be submitted. Please try again.');
+              });
           }
         }
       },
+            // Computed properties for filtering and sorting
       computed: {
+                // Filter lessons based on search query
         filteredLessons() {
           const query = this.searchQuery.trim().toLowerCase();
           if (!query) return this.sortedLessons;
@@ -600,6 +661,7 @@
             );
           });
         },
+                // Sort lessons based on selected attribute/order
         sortedLessons() {
           const sorted = [...this.lessons].sort((a, b) => {
             let valA = a[this.sortAttribute];
@@ -615,7 +677,10 @@
           return sorted;
         }
       }
+        // Mount the Vue app to #app
     }).mount('#app');
   </script>
+<!-- End of body -->
 </body>
+<!-- End of HTML document -->
 </html>
